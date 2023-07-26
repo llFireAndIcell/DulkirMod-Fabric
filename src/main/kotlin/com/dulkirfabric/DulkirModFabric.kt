@@ -35,7 +35,7 @@ object DulkirModFabric : ModInitializer {
 
 		// Orbit stuff
 		EVENT_BUS.registerLambdaFactory("com.dulkirfabric") { lookupInMethod, klass ->
-			lookupInMethod.invoke(null, klass, MethodHandles.lookup()) as MethodHandles.Lookup
+			lookupInMethod(null, klass, MethodHandles.lookup()) as MethodHandles.Lookup
 		}
 
 		// Mixin Extras
@@ -46,7 +46,7 @@ object DulkirModFabric : ModInitializer {
 		Registrations.registerEvents()
 
 		DulkirConfig.loadConfig()
-		System.setProperty("java.awt.headless", "false");
+		System.setProperty("java.awt.headless", "false")
 	}
 
 }

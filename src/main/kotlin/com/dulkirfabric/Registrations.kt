@@ -98,7 +98,7 @@ object Registrations {
         }
 
         ClientSendMessageEvents.MODIFY_COMMAND.register { command ->
-            ModifyCommandEvent(command).also { it.post() }.command
+            ModifyCommandEvent(command).apply { post() }.command
         }
 
         WorldRenderEvents.END.register { context -> WorldRenderLastEvent(context).post() }
@@ -124,6 +124,5 @@ object Registrations {
         HudRenderCallback.EVENT.register { context, delta ->
             HudRenderEvent(context, delta).post()
         }
-
     }
 }
