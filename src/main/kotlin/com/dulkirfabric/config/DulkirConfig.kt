@@ -13,7 +13,6 @@
 @file:UseSerializers(com.dulkirfabric.config.serializations.KeySerializer::class)
 package com.dulkirfabric.config
 
-import com.dulkirfabric.DulkirModFabric
 import com.dulkirfabric.DulkirModFabric.mc
 import com.dulkirfabric.dsl.*
 import com.dulkirfabric.util.render.AnimationPreset
@@ -23,7 +22,6 @@ import kotlinx.serialization.UseSerializers
 import kotlinx.serialization.decodeFromString
 import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
-import me.shedaniel.clothconfig2.api.ConfigEntryBuilder
 import moe.nea.jarvis.api.Point
 import net.minecraft.client.gui.screen.Screen
 import net.minecraft.client.util.InputUtil
@@ -43,212 +41,214 @@ class DulkirConfig {
 
     init {
         configBuilder {
+            // general config settings
             defaultBackgroundTexture = Identifier("minecraft:textures/block/oak_planks.png")
             setGlobalized(true)
             setGlobalizedExpanded(false)
             parentScreen = mc.currentScreen
             setSavingRunnable(::saveConfig)
+            transparentBackground()
 
-            ConfigHelper.entryBuilder = entryBuilder()
+            // store the entry builder so it can be used in ConfigBuilderDsl.kt
+            EntryBuilderInstance.set(entryBuilder())
 
-            category(Text.literal("General")) {
+            // making categories and adding config options
+            category("General") {
                 makeToggle(
-                    text = Text.literal("Inventory Scale Toggle"),
+                    text = "Inventory Scale Toggle",
                     property = configOptions::invScaleBool,
-                    tooltip = Text.literal("This is a tooltip")
+                    tooltip = "This is a tooltip"
                 )
                 makeFloat(
-                    text = Text.literal("Inventory Scale"),
+                    text = "Inventory Scale",
                     property = configOptions::inventoryScale,
-                    tooltip = Text.literal("Size of GUI whenever you're in an inventory screen")
+                    tooltip = "Size of GUI whenever you're in an inventory screen"
                 )
                 makeFloat(
-                    text = Text.literal("Tooltip Scale"),
+                    text = "Tooltip Scale",
                     property = configOptions::tooltipScale,
-                    tooltip = Text.literal("Default Value for Scaling a particular tooltip without scroll input")
+                    tooltip = "Default Value for Scaling a particular tooltip without scroll input"
                 )
                 makeToggle(
-                    text = Text.literal("Ignore Reverse Third Person"),
+                    text = "Ignore Reverse Third Person",
                     property = configOptions::ignoreReverseThirdPerson
                 )
                 makeToggle(
-                    text = Text.literal("Disable Status Effect Rendering"),
+                    text = "Disable Status Effect Rendering",
                     property = configOptions::statusEffectHidden
                 )
                 makeToggle(
-                    text = Text.literal("Custom Block outlines"),
+                    text = "Custom Block outlines",
                     property = configOptions::customBlockOutlines
                 )
                 makeIntSlider(
-                    text = Text.literal("Line Thickness"),
+                    text = "Line Thickness",
                     property = configOptions::blockOutlineThickness,
                     min = 1,
                     max = 5
                 )
                 makeColor(
-                    text = Text.literal("Outline Color"),
+                    text = "Outline Color",
                     property = configOptions::blockOutlineColor
                 )
                 makeToggle(
-                    text = Text.literal("Abiphone DND"),
+                    text = "Abiphone DND",
                     property = configOptions::abiPhoneDND
                 )
                 makeToggle(
-                    text = Text.literal("Inactive Effigy Waypoints"),
+                    text = "Inactive Effigy Waypoints",
                     property = configOptions::inactiveEffigyDisplay
                 )
                 makeToggle(
-                    text = Text.literal("Disable Explosion Particles"),
+                    text = "Disable Explosion Particles",
                     property = configOptions::disableExplosionParticles
                 )
                 makeToggle(
-                    text = Text.literal("Durability-Based Cooldown Display"),
+                    text = "Durability-Based Cooldown Display",
                     property = configOptions::duraCooldown
                 )
                 makeToggle(
-                    text = Text.literal("Hide Armor Overlay in Skyblock"),
+                    text = "Hide Armor Overlay in Skyblock",
                     property = configOptions::hideArmorOverlay
                 )
                 makeToggle(
-                    text = Text.literal("Hide Hunger Overlay in Skyblock"),
+                    text = "Hide Hunger Overlay in Skyblock",
                     property = configOptions::hideHungerOverlay
                 )
                 makeIntSlider(
-                    text = Text.literal("Anti Downtime Alarm"),
+                    text = "Anti Downtime Alarm",
                     property = configOptions::alarmTimeout,
                     min = 0,
                     max = 1000,
-                    tooltip = Text.literal("Set to 0 to disable. (Time in seconds)")
+                    tooltip = "Set to 0 to disable. (Time in seconds)"
                 )
                 makeToggle(
-                    text = Text.literal("Arachne Keeper Waypoints"),
+                    text = "Arachne Keeper Waypoints",
                     property = configOptions::arachneKeeperWaypoints
                 )
                 makeToggle(
-                    text = Text.literal("Arachne Boss Spawn Timer"),
+                    text = "Arachne Boss Spawn Timer",
                     property = configOptions::arachneSpawnTimer
                 )
                 makeToggle(
-                    text = Text.literal("Convert Action Bar to HUD elements"),
+                    text = "Convert Action Bar to HUD elements",
                     property = configOptions::hudifyActionBar,
-                    tooltip = Text.literal("This converts Mana/Health/Def/Stacks as HUD elements")
+                    tooltip = "This converts Mana/Health/Def/Stacks as HUD elements"
                 )
                 makeToggle(
-                    text = Text.literal("Include EHP in def HUD element"),
+                    text = "Include EHP in def HUD element",
                     property = configOptions::showEHP,
-                    tooltip = Text.literal("Must have Action Bar HUD elements Enabled")
+                    tooltip = "Must have Action Bar HUD elements Enabled"
                 )
                 makeToggle(
-                    text = Text.literal("Hide Held Item Tooltips"),
+                    text = "Hide Held Item Tooltips",
                     property = configOptions::hideHeldItemTooltip,
-                    tooltip = Text.literal("This is for the pesky overlay that pops up on switching items")
+                    tooltip = "This is for the pesky overlay that pops up on switching items"
                 )
             }
 
-            category(Text.literal("Shortcuts")) {
+            category("Shortcuts") {
                 makeKeybind(
-                    text = Text.literal("Dynamic Key"),
+                    text = "Dynamic Key",
                     property = configOptions::dynamicKey
                 )
                 makeConfigList(
-                    name = Text.literal("Macros"),
+                    name = "Macros",
                     property = configOptions::macrosList,
                     newT = { Macro(UNKNOWN_KEY, "") },
-                    elementName = Text.literal("Macro"),
+                    elementName = "Macro",
                     render = { value ->
                         listOf(
-                            makeString(Text.literal("Command"), value::command),
-                            makeKeybind(Text.literal("KeyBinding"), value::keyBinding)
+                            makeString("Command", value::command),
+                            makeKeybind("KeyBinding", value::keyBinding)
                         )
                     }
                 )
             }
 
-            category(Text.literal("Aliases")) {
+            category("Aliases") {
                 makeConfigList(
-                    Text.literal("Aliases (do not include '/')"),
+                    "Aliases (do not include '/')",
                     configOptions::aliasList,
                     { Alias("", "") },
-                    Text.literal("Alias"),
+                    "Alias",
                     { value ->
                         listOf(
-                            makeString(Text.literal("Command"), value::command),
-                            makeString(Text.literal("Alias"), value::alias)
+                            makeString("Command", value::command),
+                            makeString("Alias", value::alias)
                         )
                     }
                 )
             }
 
-            category(Text.literal("Animations")) {
+            category("Animations") {
                 makeIntSlider(
-                    text = Text.literal("posX"),
+                    text = "posX",
                     property = configOptions.animationPreset::posX,
                     min = -150,
                     max = 150
                 )
                 makeIntSlider(
-                    text = Text.literal("posY"),
+                    text = "posY",
                     property = configOptions.animationPreset::posY,
                     min = -150,
                     max = 150
                 )
                 makeIntSlider(
-                    text = Text.literal("posZ"),
+                    text = "posZ",
                     property = configOptions.animationPreset::posZ,
                     min = -150, max = 50
                 )
                 makeIntSlider(
-                    text = Text.literal("rotationX"),
+                    text = "rotationX",
                     property = configOptions.animationPreset::rotX,
                     min = -180,
                     max = 180
                 )
                 makeIntSlider(
-                    text = Text.literal("rotationY"),
+                    text = "rotationY",
                     property = configOptions.animationPreset::rotY,
                     min = -180,
                     max = 180
                 )
                 makeIntSlider(
-                    text = Text.literal("rotationZ"),
+                    text = "rotationZ",
                     property = configOptions.animationPreset::rotZ,
                     min = -180,
                     max = 180
                 )
                 makeFloat(
-                    text = Text.literal("Held Item Scale"),
+                    text = "Held Item Scale",
                     property = configOptions.animationPreset::scale,
-                    tooltip = Text.literal("Recommended range of .1 - 2")
+                    tooltip = "Recommended range of .1 - 2"
                 )
                 makeIntSlider(
-                    text = Text.literal("Swing Speed"),
+                    text = "Swing Speed",
                     property = configOptions.animationPreset::swingDuration,
                     min = 2,
                     max = 20
                 )
                 makeToggle(
-                    Text.literal("Cancel Re-Equip Animation"),
+                    "Cancel Re-Equip Animation",
                     configOptions.animationPreset::cancelReEquip
                 )
             }
 
-            category(Text.literal("Bridge Features")) {
+            category("Bridge Features") {
                 makeToggle(
-                    text = Text.literal("Format Bridge Messages"),
+                    text = "Format Bridge Messages",
                     property = configOptions::bridgeFormatter
                 )
                 makeString(
-                    text = Text.literal("Bridge Bot IGN"),
+                    text = "Bridge Bot IGN",
                     property = configOptions::bridgeBotName
                 )
                 makeColor(
-                    text = Text.literal("Bridge User Color"),
+                    text = "Bridge User Color",
                     property = configOptions::bridgeNameColor
                 ) { setDefaultValue(Formatting.GOLD.colorValue!!) }
             }
-
-            transparentBackground()
-        }.build().let { screen = it }
+        }.let { screen = it }
     }
 
     @Serializable
