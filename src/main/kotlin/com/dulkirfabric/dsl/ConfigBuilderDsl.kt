@@ -10,6 +10,7 @@ import net.minecraft.text.Text
 import java.util.*
 import kotlin.reflect.KMutableProperty0
 
+// this is necessary for some weird reason idk what it does but the value is constant
 val resetButtonKey: Text = Text.translatable("text.cloth-config.reset_value")
 
 /**

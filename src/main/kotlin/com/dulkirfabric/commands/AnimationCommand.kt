@@ -59,16 +59,18 @@ object AnimationCommand {
         try {
             val jsonString = String(Base64.getDecoder().decode(base64))
             val import = gson.fromJson(jsonString, AnimationPreset::class.java)
-            DulkirConfig.configOptions.animationPreset.posX = import.posX
-            DulkirConfig.configOptions.animationPreset.posY = import.posY
-            DulkirConfig.configOptions.animationPreset.posZ = import.posZ
-            DulkirConfig.configOptions.animationPreset.rotX = import.rotX
-            DulkirConfig.configOptions.animationPreset.rotY = import.rotY
-            DulkirConfig.configOptions.animationPreset.rotZ = import.rotZ
-            DulkirConfig.configOptions.animationPreset.scale = import.scale
-            DulkirConfig.configOptions.animationPreset.swingDuration = import.swingDuration
-            DulkirConfig.configOptions.animationPreset.cancelReEquip = import.cancelReEquip
-            DulkirConfig.configOptions.animationPreset.rotationlessDrink = import.rotationlessDrink
+            DulkirConfig.configOptions.animationPreset.apply {
+                posX = import.posX
+                posY = import.posY
+                posZ = import.posZ
+                rotX = import.rotX
+                rotY = import.rotY
+                rotZ = import.rotZ
+                scale = import.scale
+                swingDuration = import.swingDuration
+                cancelReEquip = import.cancelReEquip
+                rotationlessDrink = import.rotationlessDrink
+            }
         } catch (e: Exception) {
             TextUtils.info("§6Something went wrong when trying to import settings. Make sure you have a valid string copied to your clipboard!")
             return

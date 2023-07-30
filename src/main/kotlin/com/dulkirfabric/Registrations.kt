@@ -35,48 +35,52 @@ object Registrations {
     private var tickCount: Int = 0
 
     fun registerCommands() {
-        val cre = ClientCommandRegistrationCallback.EVENT
-        cre.register(ConfigCommand::register)
-        cre.register(JoinDungeonCommands.F1Command::register)
-        cre.register(JoinDungeonCommands.F2Command::register)
-        cre.register(JoinDungeonCommands.F3Command::register)
-        cre.register(JoinDungeonCommands.F4Command::register)
-        cre.register(JoinDungeonCommands.F5Command::register)
-        cre.register(JoinDungeonCommands.F6Command::register)
-        cre.register(JoinDungeonCommands.F7Command::register)
-        cre.register(JoinDungeonCommands.M1Command::register)
-        cre.register(JoinDungeonCommands.M2Command::register)
-        cre.register(JoinDungeonCommands.M3Command::register)
-        cre.register(JoinDungeonCommands.M4Command::register)
-        cre.register(JoinDungeonCommands.M5Command::register)
-        cre.register(JoinDungeonCommands.M6Command::register)
-        cre.register(JoinDungeonCommands.M7Command::register)
-        cre.register(DynamicKeyCommand::register)
-        cre.register(AnimationCommand::register)
+        arrayOf(
+            ConfigCommand::register,
+            JoinDungeonCommands.F1Command::register,
+            JoinDungeonCommands.F2Command::register,
+            JoinDungeonCommands.F3Command::register,
+            JoinDungeonCommands.F4Command::register,
+            JoinDungeonCommands.F5Command::register,
+            JoinDungeonCommands.F6Command::register,
+            JoinDungeonCommands.F7Command::register,
+            JoinDungeonCommands.M1Command::register,
+            JoinDungeonCommands.M2Command::register,
+            JoinDungeonCommands.M3Command::register,
+            JoinDungeonCommands.M4Command::register,
+            JoinDungeonCommands.M5Command::register,
+            JoinDungeonCommands.M6Command::register,
+            JoinDungeonCommands.M7Command::register,
+            DynamicKeyCommand::register,
+            AnimationCommand::register
+        ).forEach { ClientCommandRegistrationCallback.EVENT.register(it) }
+
         if (FabricLoader.getInstance().isDevelopmentEnvironment)
-            cre.register(TestCommand::register)
+            ClientCommandRegistrationCallback.EVENT.register(TestCommand::register)
     }
 
     fun registerEventListeners() {
-        EVENT_BUS.subscribe(DulkirModFabric)
-        EVENT_BUS.subscribe(KeyShortCutImpl)
-        EVENT_BUS.subscribe(RenderTest)
-        EVENT_BUS.subscribe(TooltipImpl)
-        EVENT_BUS.subscribe(CustomBlockOutline)
-        EVENT_BUS.subscribe(AbiPhoneDND)
-        EVENT_BUS.subscribe(InventoryScale)
-        EVENT_BUS.subscribe(IPhoneAlarm)
-        EVENT_BUS.subscribe(AliasImpl)
-        EVENT_BUS.subscribe(EffigyDisplay)
-        EVENT_BUS.subscribe(TablistUtils)
-        EVENT_BUS.subscribe(CullExplosionParticles)
-        EVENT_BUS.subscribe(CooldownDisplays)
-        EVENT_BUS.subscribe(ArachneFeatures)
-        EVENT_BUS.subscribe(BridgeBotFormatter)
-        EVENT_BUS.subscribe(SpeedOverlay)
-        EVENT_BUS.subscribe(ActionBarUtil)
-        EVENT_BUS.subscribe(ActionBarHudReplacements)
-        EVENT_BUS.subscribe(ChatStacking)
+        arrayOf(
+            DulkirModFabric,
+            KeyShortCutImpl,
+            RenderTest,
+            TooltipImpl,
+            CustomBlockOutline,
+            AbiPhoneDND,
+            InventoryScale,
+            IPhoneAlarm,
+            AliasImpl,
+            EffigyDisplay,
+            TablistUtils,
+            CullExplosionParticles,
+            CooldownDisplays,
+            ArachneFeatures,
+            BridgeBotFormatter,
+            SpeedOverlay,
+            ActionBarUtil,
+            ActionBarHudReplacements,
+            ChatStacking
+        ).forEach { EVENT_BUS.subscribe(it) }
     }
 
     fun registerEvents() {
