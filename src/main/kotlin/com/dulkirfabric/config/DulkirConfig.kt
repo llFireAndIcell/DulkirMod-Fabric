@@ -49,9 +49,6 @@ class DulkirConfig {
             setSavingRunnable(::saveConfig)
             transparentBackground()
 
-            // store the entry builder so it can be used in ConfigBuilderDsl.kt
-            EntryBuilderInstance.set(entryBuilder())
-
             // making categories and adding config options
             category("General") {
                 makeToggle(
