@@ -1,6 +1,10 @@
 package com.dulkirfabric.util
 
 import com.dulkirfabric.DulkirModFabric
+import com.dulkirfabric.events.LongUpdateEvent
+import com.dulkirfabric.events.PlaySoundEvent
+import com.dulkirfabric.events.SlayerBossEvents
+import meteordevelopment.orbit.EventHandler
 import net.minecraft.scoreboard.Team
 import net.minecraft.text.StringVisitable
 import net.minecraft.text.Style
@@ -9,6 +13,9 @@ import net.minecraft.util.Formatting
 import java.util.*
 
 object ScoreBoardUtils {
+
+    var hasActiveSlayerQuest = false
+    var slayerType: String? = ""
 
     /**
      * Gets Scoreboard lines, will return null if not in Skyblock.
@@ -68,5 +75,32 @@ object ScoreBoardUtils {
             Optional.empty()
         }, Style.EMPTY)
         return sb.toString().replace("§[^a-f0-9]".toRegex(), "")
+    }
+
+    @EventHandler
+    fun updateUtility(event: LongUpdateEvent) {
+        val lines = getLines() ?: return
+        lines.forEach {
+            when {
+                it.contains("Slayer Quest") -> {
+                    hasActiveSlayerQuest = true
+                    val i = lines.indexOf(it) + 1
+                    if (i == 0) return err()
+                    slayerType = lines[i]
+                }
+            }
+        }
+    }
+
+    @EventHandler
+    fun onSound(event: PlaySoundEvent) {
+        if (event.sound.id.path != "entity.wither.shoot") return
+        if (event.sound.pitch != 0.6984127f) return
+        if (event.sound.volume != .5f) return
+        SlayerBossEvents.Spawn(slayerType?: return err()).post()
+    }
+
+    fun err() {
+        TextUtils.info("§6Error Determining active slayer type, please report.")
     }
 }

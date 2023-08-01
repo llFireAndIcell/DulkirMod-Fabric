@@ -24,11 +24,8 @@ import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
 import moe.nea.jarvis.api.Point
 import net.minecraft.client.gui.screen.Screen
-import net.minecraft.client.util.InputUtil
-import net.minecraft.client.util.InputUtil.UNKNOWN_KEY
-import net.minecraft.text.LiteralTextContent
-import net.minecraft.text.MutableText
-import net.minecraft.text.Text
+import net.minecraft.client.util.InputUtil.*
+import net.minecraft.text.*
 import net.minecraft.util.Formatting
 import net.minecraft.util.Identifier
 import java.io.File
@@ -93,6 +90,10 @@ class DulkirConfig {
                     property = configOptions::abiPhoneDND
                 )
                 makeToggle(
+                    "Abiphone Caller ID",
+                    configOptions::abiPhoneCallerID
+                )
+                makeToggle(
                     text = "Inactive Effigy Waypoints",
                     property = configOptions::inactiveEffigyDisplay
                 )
@@ -111,6 +112,26 @@ class DulkirConfig {
                 makeToggle(
                     text = "Hide Hunger Overlay in Skyblock",
                     property = configOptions::hideHungerOverlay
+                )
+                makeToggle(
+                    "Hide Fire Overlay",
+                    configOptions::hideFireOverlay
+                )
+                makeToggle(
+                    "Hide Lightning (SkyBlock only)",
+                    configOptions::hideLightning
+                )
+                makeToggle(
+                    "Hide Non-Crits",
+                    configOptions::hideNonCrits
+                )
+                makeToggle(
+                    "Hide Crits",
+                    configOptions::hideCrits
+                )
+                makeToggle(
+                    "Truncate Crits",
+                    configOptions::truncateDamage
                 )
                 makeIntSlider(
                     text = "Anti Downtime Alarm",
@@ -133,6 +154,10 @@ class DulkirConfig {
                     tooltip = "This converts Mana/Health/Def/Stacks as HUD elements"
                 )
                 makeToggle(
+                    "Show Speed in HUD",
+                    configOptions::speedHud
+                )
+                makeToggle(
                     text = "Include EHP in def HUD element",
                     property = configOptions::showEHP,
                     tooltip = "Must have Action Bar HUD elements Enabled"
@@ -142,12 +167,33 @@ class DulkirConfig {
                     property = configOptions::hideHeldItemTooltip,
                     tooltip = "This is for the pesky overlay that pops up on switching items"
                 )
+                makeToggle(
+                    text = "Etherwarp Preview",
+                    property = configOptions::showEtherwarpPreview,
+                    tooltip = "Highlights the targeted block when shifting with a aotv"
+                )
+                makeColor(  // TODO make this support alpha
+                    text = "Etherwarp Preview Color",
+                    property = configOptions::etherwarpPreviewColor
+                ) {
+                    setDefaultValue(0x99FFFFFF.toInt())
+                    setSaveConsumer { configOptions.etherwarpPreviewColor = it }
+                }
+                makeToggle(
+                    "Broken Hype Notification",
+                    configOptions::brokenHypNotif
+                )
             }
 
             category("Shortcuts") {
                 makeKeybind(
                     text = "Dynamic Key",
                     property = configOptions::dynamicKey
+                )
+                makeToggle(
+                    "Only Register Shortcuts in Skyblock",
+                    configOptions::macrosSkyBlockOnly,
+                    "Useful if you want to use some of these binds elsewhere for non-skyblock specific stuff"
                 )
                 makeConfigList(
                     name = "Macros",
@@ -157,7 +203,7 @@ class DulkirConfig {
                     render = { value ->
                         listOf(
                             makeString("Command", value::command),
-                            makeKeybind("KeyBinding", value::keyBinding)
+                            makeKeybind("Keybind", value::keyBinding)
                         )
                     }
                 )
@@ -165,11 +211,11 @@ class DulkirConfig {
 
             category("Aliases") {
                 makeConfigList(
-                    "Aliases (do not include '/')",
-                    configOptions::aliasList,
-                    { Alias("", "") },
-                    "Alias",
-                    { value ->
+                    name = "Aliases (do not include '/')",
+                    property = configOptions::aliasList,
+                    newT = { Alias("", "") },
+                    elementName = "Alias",
+                    render = { value ->
                         listOf(
                             makeString("Command", value::command),
                             makeString("Alias", value::alias)
@@ -245,6 +291,68 @@ class DulkirConfig {
                     property = configOptions::bridgeNameColor
                 ) { setDefaultValue(Formatting.GOLD.colorValue!!) }
             }
+
+            category("Slayer") {
+                makeToggle(
+                    text = "MiniBoss Highlight Box",
+                    property = configOptions::boxMinis
+                )
+                makeToggle(
+                    text = "Miniboss Announcement Alert",
+                    property = configOptions::announceMinis
+                )
+                makeToggle(
+                    text = "Show Kill Time on Slayer Completion",
+                    property = configOptions::slayerKillTime,
+                    tooltip = "Shows up in chat!"
+                )
+                makeToggle(
+                    text = "Blaze Slayer Attunement Display",
+                    property = configOptions::attunementDisplay,
+                    tooltip = "Shows a wireframe in the correct color for the slayer"
+                )
+                makeToggle(
+                    text = "Disable ALL particles during Blaze slayer boss",
+                    property = configOptions::cleanBlaze
+                )
+                makeToggle(
+                    text = "Vampire Steak Display",
+                    property = configOptions::steakDisplay,
+                    tooltip = "Shows a wireframe on vampire boss when you can 1 tap it"
+                )
+                makeToggle(
+                    text = "Blood Ichor Highlight",
+                    property = configOptions::ichorHighlight,
+                    tooltip = "Highlights the T5 mechanic that you line up with the boss."
+                )
+            }
+
+            category("Garden") {
+                makeToggle(
+                    text = "Show Visitor Info in HUD",
+                    property = configOptions::visitorHud,
+                )
+                makeToggle(
+                    text = "Show Composter Info in HUD",
+                    property = configOptions::showComposterInfo
+                )
+                makeToggle(
+                    text = "Show Title alert when max visitors",
+                    property = configOptions::visitorAlert
+                )
+                makeToggle(
+                    text = "Persistent Visitor alert (dependent on previous)",
+                    property = configOptions::persistentVisitorAlert
+                )
+                makeToggle(
+                    text = "Show Blocks per second (SPEED)",
+                    property = configOptions::speedBpsHud
+                )
+                makeToggle(
+                    text = "Show Pitch/Yaw in HUD",
+                    property = configOptions::pitchYawDisplay
+                )
+            }
         }.let { screen = it }
     }
 
@@ -253,9 +361,10 @@ class DulkirConfig {
         var invScaleBool: Boolean = false,
         var inventoryScale: Float = 1f,
         var macrosList: List<Macro> = listOf(Macro(UNKNOWN_KEY, "")),
+        var macrosSkyBlockOnly: Boolean = false,
         var aliasList: List<Alias> = listOf(Alias("", "")),
         var ignoreReverseThirdPerson: Boolean = false,
-        var dynamicKey: InputUtil.Key = UNKNOWN_KEY,
+        var dynamicKey: Key = UNKNOWN_KEY,
         var customBlockOutlines: Boolean = false,
         var blockOutlineThickness: Int = 3,
         var blockOutlineColor: Int = 0xFFFFFF,
@@ -265,11 +374,11 @@ class DulkirConfig {
         var statusEffectHidden: Boolean = false,
         var inactiveEffigyDisplay: Boolean = false,
         var disableExplosionParticles: Boolean = false,
-        var hideArmorOverlay: Boolean = false,
-        var hideHungerOverlay: Boolean = false,
+        var hideArmorOverlay: Boolean = true,
+        var hideHungerOverlay: Boolean = true,
         var animationPreset: AnimationPreset = AnimationPreset(),
         var duraCooldown: Boolean = false,
-        var alarmTimeout: Int = 300,
+        var alarmTimeout: Int = 0,
         var arachneKeeperWaypoints: Boolean = false,
         var arachneSpawnTimer: Boolean = false,
         var bridgeFormatter: Boolean = false,
@@ -278,12 +387,35 @@ class DulkirConfig {
         val positions: MutableMap<String, HudElement.Positioning> = mutableMapOf(),
         var hudifyActionBar: Boolean = true,
         var showEHP: Boolean = false,
-        var hideHeldItemTooltip: Boolean = false
+        var hideHeldItemTooltip: Boolean = false,
+        var showEtherwarpPreview: Boolean = true,
+        var etherwarpPreviewColor: Int = 0x99FFFFFF.toInt(),
+        var announceMinis: Boolean = false,
+        var boxMinis: Boolean = false,
+        var attunementDisplay: Boolean = false,
+        var hideFireOverlay: Boolean = false,
+        var hideLightning: Boolean = false,
+        var cleanBlaze: Boolean= false,
+        var timeSlayerBoss: Boolean = false,
+        var hideNonCrits: Boolean = false,
+        var truncateDamage: Boolean = false,
+        var hideCrits: Boolean = false,
+        var visitorHud: Boolean = false,
+        var showComposterInfo: Boolean = false,
+        var slayerKillTime: Boolean = false,
+        var visitorAlert: Boolean = false,
+        var persistentVisitorAlert: Boolean = false,
+        var brokenHypNotif: Boolean = false,
+        var steakDisplay: Boolean = false,
+        var ichorHighlight: Boolean = false,
+        var speedHud: Boolean = false,
+        var speedBpsHud: Boolean = false,
+        var pitchYawDisplay: Boolean = false,
     )
 
     @Serializable
     data class Macro(
-        var keyBinding: InputUtil.Key,
+        var keyBinding: Key,
         var command: String,
     )
 
@@ -300,24 +432,24 @@ class DulkirConfig {
 
         var configOptions = ConfigOptions()
 
-        val huds = mutableListOf<Pair<HudElement, Point>>()
+        val huds = mutableListOf<Triple<HudElement, Point, Float>>()
 
         fun hudElement(
             id: String, label: Text, width: Int, height: Int,
-            defaultPosition: Point
+            defaultPosition: Point, scale: Float = 1f
         ): HudElement {
             val element = HudElement(
                 configOptions.positions.getOrPut(
                     id
-                ) { HudElement.Positioning(defaultPosition.x(), defaultPosition.y(), 1F) },
+                ) { HudElement.Positioning(defaultPosition.x(), defaultPosition.y(), scale) },
                 id,
                 label, width, height,
             )
-            huds.add(Pair(element, defaultPosition))
+            huds.add(Triple(element, defaultPosition, scale))
             return element
         }
 
-        private fun saveConfig() {
+        fun saveConfig() {
             val json = Json {
                 prettyPrint = true
                 ignoreUnknownKeys = true
@@ -344,10 +476,10 @@ class DulkirConfig {
                 }
                 configOptions = json.decodeFromString<ConfigOptions>(configFile.readText())
             }
-            huds.forEach { (element, defaultPosition) ->
-                element.positioning = configOptions.positions.getOrPut(element.key) {
-                    HudElement.Positioning(defaultPosition.x(), defaultPosition.y(), 1F)
-                }
+            huds.forEach { (element, defaultPosition, scale) ->
+                element.positioning = configOptions.positions.getOrPut(
+                    element.key
+                ) { HudElement.Positioning(defaultPosition.x(), defaultPosition.y(), scale) }
             }
         }
     }

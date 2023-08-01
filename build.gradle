@@ -40,12 +40,13 @@ dependencies {
 	implementation "meteordevelopment:orbit:0.2.3"
 	include "meteordevelopment:orbit:0.2.3"
 	modApi "me.shedaniel.cloth:cloth-config-fabric:11.0.99"
+	include "me.shedaniel.cloth:cloth-config-fabric:11.0.99"
 	include "com.github.llamalad7.mixinextras:mixinextras-fabric:0.2.0-beta.9"
 	implementation "com.github.llamalad7.mixinextras:mixinextras-fabric:0.2.0-beta.9"
 	annotationProcessor "com.github.llamalad7.mixinextras:mixinextras-fabric:0.2.0-beta.9"
-	modImplementation("moe.nea.jarvis:jarvis-fabric:1.0.1")
-	include("moe.nea.jarvis:jarvis-fabric:1.0.1")
-	modLocalRuntime("moe.nea.jarvis:jarvis-fabric:1.0.1")
+	modImplementation("moe.nea.jarvis:jarvis-api:1.1.1")
+	include("moe.nea.jarvis:jarvis-fabric:1.1.1")
+	modLocalRuntime("moe.nea.jarvis:jarvis-fabric:1.1.1")
 }
 
 loom {
@@ -55,6 +56,9 @@ loom {
 			property("devauth.enabled", "true")
 			property("fabric.log.level", "info")
 			vmArg("-ea")
+			vmArg("-XX:+AllowEnhancedClassRedefinition")
+			vmArg("-XX:HotswapAgent=external")
+			vmArg("-javaagent:/home/ronald/Software-Packages/hotswap-agent-1.4.2-SNAPSHOT.jar")
 		}
 	}
 	accessWidenerPath = file("src/main/resources/dulkirmod.accesswidener")

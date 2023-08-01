@@ -9,11 +9,20 @@ import com.dulkirfabric.events.chat.OverlayReceivedEvent
 import com.dulkirfabric.features.*
 import com.dulkirfabric.features.chat.AbiPhoneDND
 import com.dulkirfabric.features.chat.BridgeBotFormatter
-import com.dulkirfabric.features.chat.ChatStacking
+import com.dulkirfabric.features.filters.DamageNumbers
+import com.dulkirfabric.features.filters.Lightning
+import com.dulkirfabric.features.slayer.BossTimer
+import com.dulkirfabric.features.slayer.Demonlord
+import com.dulkirfabric.features.slayer.MiniBossHighlight
+import com.dulkirfabric.features.slayer.Vampire
 import com.dulkirfabric.hud.ActionBarHudReplacements
+import com.dulkirfabric.hud.Garden
 import com.dulkirfabric.hud.SpeedOverlay
 import com.dulkirfabric.util.ActionBarUtil
+import com.dulkirfabric.util.ScoreBoardUtils
 import com.dulkirfabric.util.TablistUtils
+import com.dulkirfabric.util.Utils
+import com.dulkirfabric.util.render.HudRenderUtil
 import net.fabricmc.fabric.api.client.command.v2.ClientCommandRegistrationCallback
 import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientEntityEvents
 import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents
@@ -79,7 +88,19 @@ object Registrations {
             SpeedOverlay,
             ActionBarUtil,
             ActionBarHudReplacements,
-            ChatStacking
+            AotvHighlight,
+            MiniBossHighlight,
+            ScoreBoardUtils,
+            HudRenderUtil,
+            Demonlord,
+            Lightning,
+            Utils,
+            BossTimer,
+            DamageNumbers,
+            Garden,
+            VisitorAlert,
+            BrokenHyp,
+            Vampire,
         ).forEach { EVENT_BUS.subscribe(it) }
     }
 

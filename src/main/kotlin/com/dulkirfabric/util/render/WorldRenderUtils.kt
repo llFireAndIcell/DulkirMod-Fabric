@@ -12,8 +12,10 @@ import net.minecraft.util.Formatting
 import net.minecraft.util.math.Box
 import net.minecraft.util.math.Vec3d
 import org.joml.Vector3f
+import org.lwjgl.opengl.GL11
 import java.awt.Color
 import kotlin.math.max
+import kotlin.math.min
 import kotlin.math.pow
 import kotlin.math.sqrt
 
@@ -51,7 +53,7 @@ object WorldRenderUtils {
      * TODO: write a more custom rendering function so we don't have to do this ugly translation of
      * Minecraft's screen space rendering logic to a world space rendering function.
      */
-    fun drawBox(
+    fun drawWireFrame(
         context: WorldRenderContext,
         box: Box,
         color: Color,
@@ -215,7 +217,7 @@ object WorldRenderUtils {
         depthTest: Boolean = true,
         scale: Float = 1f
     ) {
-        if (depthTest) {
+        if (!depthTest) {
             RenderSystem.disableDepthTest()
         }
         RenderSystem.enableBlend()
@@ -347,5 +349,41 @@ object WorldRenderUtils {
         RenderSystem.enableDepthTest()
         RenderSystem.enableCull()
         RenderSystem.disableBlend()
+    }
+
+    /**
+     * Draws a filled box at a given position
+     */
+    fun drawBox(
+        context: WorldRenderContext,
+        x: Double,
+        y: Double,
+        z: Double,
+        width: Double,
+        height: Double,
+        depth: Double,
+        color: Color,
+        depthTest: Boolean
+    ) {
+        if (!depthTest) {
+            RenderSystem.disableDepthTest()
+            //RenderSystem.depthMask(false)
+        } else {
+            RenderSystem.enableDepthTest()
+        }
+        RenderSystem.setShader(GameRenderer::getPositionColorProgram)
+        RenderSystem.enableBlend()
+        RenderSystem.defaultBlendFunc()
+
+        val matrices = context.matrixStack()
+        val tes = Tessellator.getInstance()
+        tes.buffer.begin(VertexFormat.DrawMode.TRIANGLE_STRIP, VertexFormats.POSITION_COLOR)
+        matrices.push()
+        matrices.translate(x - context.camera().pos.x, y - context.camera().pos.y, z - context.camera().pos.z)
+        WorldRenderer.renderFilledBox(matrices, tes.buffer, 0.0, 0.0, 0.0, width, height, depth,
+            color.red / 255f, color.green / 255f, color.blue / 255f, color.alpha / 255f)
+        tes.draw()
+        RenderSystem.enableDepthTest()
+        matrices.pop()
     }
 }
