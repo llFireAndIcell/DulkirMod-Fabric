@@ -3,6 +3,7 @@ package com.dulkirfabric.commands
 import com.dulkirfabric.DulkirModFabric.mc
 import com.dulkirfabric.config.DulkirConfig
 import com.dulkirfabric.dsl.literalArgument
+import com.dulkirfabric.dsl.registerCommand
 import com.dulkirfabric.util.TextUtils
 import com.dulkirfabric.util.render.AnimationPreset
 import com.google.gson.Gson
@@ -11,42 +12,39 @@ import net.fabricmc.fabric.api.client.command.v2.FabricClientCommandSource
 import net.minecraft.command.CommandRegistryAccess
 import java.util.*
 
-object AnimationCommand {
+object AnimationCommand : ICommand {
 
-    fun register(dispatcher: CommandDispatcher<FabricClientCommandSource>, registryAccess: CommandRegistryAccess) {
-        dispatcher.register(
-
-            literalArgument("animations") {
-                executes {
-                    TextUtils.info("§6Usage: /animations <import/export>")
-                    TextUtils.info("§6For more information about this command, run /animations help")
-                    return@executes 0
-                }
-
-                then(literalArgument("import") {
-                    executes {
-                        applyPresetFromClipboard()
-                        return@executes 1
-                    }
-                })
-
-                then(literalArgument("export") {
-                    executes {
-                        applyPresetToClipboard()
-                        return@executes 1
-                    }
-                })
-
-                then(literalArgument("help") {
-                    executes {
-                        TextUtils.info("§6§lAnimations Info")
-                        TextUtils.info("§7 - Exporting using this command will encode data about your held item (position, scale, and swing variables) to a base64 encoded string that you can share with friends.")
-                        TextUtils.info("§7 - Importing using this command will apply settings based on the state of your clipboard, if possible.")
-                        return@executes 2
-                    }
-                })
+    override fun register(dispatcher: CommandDispatcher<FabricClientCommandSource>, registryAccess: CommandRegistryAccess) {
+        dispatcher.registerCommand("animations") {
+            executes {
+                TextUtils.info("§6Usage: /animations <import/export>")
+                TextUtils.info("§6For more information about this command, run /animations help")
+                return@executes 0
             }
-        )
+
+            then(literalArgument("import") {
+                executes {
+                    applyPresetFromClipboard()
+                    return@executes 1
+                }
+            })
+
+            then(literalArgument("export") {
+                executes {
+                    applyPresetToClipboard()
+                    return@executes 1
+                }
+            })
+
+            then(literalArgument("help") {
+                executes {
+                    TextUtils.info("§6§lAnimations Info")
+                    TextUtils.info("§7 - Exporting using this command will encode data about your held item (position, scale, and swing variables) to a base64 encoded string that you can share with friends.")
+                    TextUtils.info("§7 - Importing using this command will apply settings based on the state of your clipboard, if possible.")
+                    return@executes 2
+                }
+            })
+        }
     }
 
     private fun applyPresetFromClipboard() {

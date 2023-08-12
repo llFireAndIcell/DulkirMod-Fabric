@@ -9,6 +9,7 @@ import com.dulkirfabric.events.chat.OverlayReceivedEvent
 import com.dulkirfabric.features.*
 import com.dulkirfabric.features.chat.AbiPhoneDND
 import com.dulkirfabric.features.chat.BridgeBotFormatter
+import com.dulkirfabric.features.filters.CullExplosionParticles
 import com.dulkirfabric.features.filters.DamageNumbers
 import com.dulkirfabric.features.filters.Lightning
 import com.dulkirfabric.features.slayer.BossTimer
@@ -46,20 +47,7 @@ object Registrations {
     fun registerCommands() {
         arrayOf(
             ConfigCommand::register,
-            JoinDungeonCommands.F1Command::register,
-            JoinDungeonCommands.F2Command::register,
-            JoinDungeonCommands.F3Command::register,
-            JoinDungeonCommands.F4Command::register,
-            JoinDungeonCommands.F5Command::register,
-            JoinDungeonCommands.F6Command::register,
-            JoinDungeonCommands.F7Command::register,
-            JoinDungeonCommands.M1Command::register,
-            JoinDungeonCommands.M2Command::register,
-            JoinDungeonCommands.M3Command::register,
-            JoinDungeonCommands.M4Command::register,
-            JoinDungeonCommands.M5Command::register,
-            JoinDungeonCommands.M6Command::register,
-            JoinDungeonCommands.M7Command::register,
+            JoinDungeonCommands::register,
             DynamicKeyCommand::register,
             AnimationCommand::register
         ).forEach { ClientCommandRegistrationCallback.EVENT.register(it) }

@@ -32,6 +32,7 @@ import java.io.File
 
 class DulkirConfig {
 
+    @Suppress("unused")
     private val buttonText: Text =
         MutableText.of(LiteralTextContent("Dulkir")).formatted(Formatting.BOLD, Formatting.YELLOW)
     var screen: Screen
@@ -90,8 +91,8 @@ class DulkirConfig {
                     property = configOptions::abiPhoneDND
                 )
                 makeToggle(
-                    "Abiphone Caller ID",
-                    configOptions::abiPhoneCallerID
+                    text = "Abiphone Caller ID",
+                    property = configOptions::abiPhoneCallerID
                 )
                 makeToggle(
                     text = "Inactive Effigy Waypoints",
@@ -114,24 +115,24 @@ class DulkirConfig {
                     property = configOptions::hideHungerOverlay
                 )
                 makeToggle(
-                    "Hide Fire Overlay",
-                    configOptions::hideFireOverlay
+                    text = "Hide Fire Overlay",
+                    property = configOptions::hideFireOverlay
                 )
                 makeToggle(
-                    "Hide Lightning (SkyBlock only)",
-                    configOptions::hideLightning
+                    text = "Hide Lightning (SkyBlock only)",
+                    property = configOptions::hideLightning
                 )
                 makeToggle(
-                    "Hide Non-Crits",
-                    configOptions::hideNonCrits
+                    text = "Hide Non-Crits",
+                    property = configOptions::hideNonCrits
                 )
                 makeToggle(
-                    "Hide Crits",
-                    configOptions::hideCrits
+                    text = "Hide Crits",
+                    property = configOptions::hideCrits
                 )
                 makeToggle(
-                    "Truncate Crits",
-                    configOptions::truncateDamage
+                    text = "Truncate Crits",
+                    property = configOptions::truncateDamage
                 )
                 makeIntSlider(
                     text = "Anti Downtime Alarm",
@@ -154,8 +155,8 @@ class DulkirConfig {
                     tooltip = "This converts Mana/Health/Def/Stacks as HUD elements"
                 )
                 makeToggle(
-                    "Show Speed in HUD",
-                    configOptions::speedHud
+                    text = "Show Speed in HUD",
+                    property = configOptions::speedHud
                 )
                 makeToggle(
                     text = "Include EHP in def HUD element",
@@ -172,16 +173,13 @@ class DulkirConfig {
                     property = configOptions::showEtherwarpPreview,
                     tooltip = "Highlights the targeted block when shifting with a aotv"
                 )
-                makeColor(  // TODO make this support alpha
+                makeColor(
                     text = "Etherwarp Preview Color",
                     property = configOptions::etherwarpPreviewColor
-                ) {
-                    setDefaultValue(0x99FFFFFF.toInt())
-                    setSaveConsumer { configOptions.etherwarpPreviewColor = it }
-                }
+                ) { setDefaultValue(0x99FFFFFF.toInt()) }
                 makeToggle(
-                    "Broken Hype Notification",
-                    configOptions::brokenHypNotif
+                    text = "Broken Hype Notification",
+                    property = configOptions::brokenHypNotif
                 )
             }
 
@@ -272,8 +270,8 @@ class DulkirConfig {
                     max = 20
                 )
                 makeToggle(
-                    "Cancel Re-Equip Animation",
-                    configOptions.animationPreset::cancelReEquip
+                    text = "Cancel Re-Equip Animation",
+                    property = configOptions.animationPreset::cancelReEquip
                 )
             }
 
