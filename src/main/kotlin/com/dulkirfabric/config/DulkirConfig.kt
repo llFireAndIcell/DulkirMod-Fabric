@@ -409,6 +409,10 @@ class DulkirConfig {
         var speedHud: Boolean = false,
         var speedBpsHud: Boolean = false,
         var pitchYawDisplay: Boolean = false,
+//        var farmBreakKey: Key = fromKeyCode(GLFW_KEY_SPACE, GLFW_KEY_SPACE),
+//        var defaultBreakKey: Key = fromTranslationKey("key.mouse.left"),
+//        var farmSens: Int = 0,
+//        var defaultSens: Int = 100,
     )
 
     @Serializable
