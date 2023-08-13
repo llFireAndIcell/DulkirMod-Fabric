@@ -15,6 +15,7 @@ package com.dulkirfabric.config
 
 import com.dulkirfabric.DulkirModFabric.mc
 import com.dulkirfabric.dsl.*
+import com.dulkirfabric.dsl.config.*
 import com.dulkirfabric.util.render.AnimationPreset
 import com.dulkirfabric.util.render.HudElement
 import kotlinx.serialization.Serializable
@@ -49,307 +50,176 @@ class DulkirConfig {
 
             // making categories and adding config options
             category("General") {
-                makeToggle(
-                    text = "Inventory Scale Toggle",
-                    property = configOptions::invScaleBool,
-                    tooltip = "This is a tooltip"
-                )
-                makeFloat(
-                    text = "Inventory Scale",
-                    property = configOptions::inventoryScale,
-                    tooltip = "Size of GUI whenever you're in an inventory screen"
-                )
-                makeFloat(
-                    text = "Tooltip Scale",
-                    property = configOptions::tooltipScale,
-                    tooltip = "Default Value for Scaling a particular tooltip without scroll input"
-                )
-                makeToggle(
-                    text = "Ignore Reverse Third Person",
-                    property = configOptions::ignoreReverseThirdPerson
-                )
-                makeToggle(
-                    text = "Disable Status Effect Rendering",
-                    property = configOptions::statusEffectHidden
-                )
-                makeToggle(
-                    text = "Custom Block outlines",
-                    property = configOptions::customBlockOutlines
-                )
-                makeIntSlider(
-                    text = "Line Thickness",
-                    property = configOptions::blockOutlineThickness,
-                    min = 1,
-                    max = 5
-                )
-                makeColor(
-                    text = "Outline Color",
-                    property = configOptions::blockOutlineColor
-                )
-                makeToggle(
-                    text = "Abiphone DND",
-                    property = configOptions::abiPhoneDND
-                )
-                makeToggle(
-                    text = "Abiphone Caller ID",
-                    property = configOptions::abiPhoneCallerID
-                )
-                makeToggle(
-                    text = "Inactive Effigy Waypoints",
-                    property = configOptions::inactiveEffigyDisplay
-                )
-                makeToggle(
-                    text = "Disable Explosion Particles",
-                    property = configOptions::disableExplosionParticles
-                )
-                makeToggle(
-                    text = "Durability-Based Cooldown Display",
-                    property = configOptions::duraCooldown
-                )
-                makeToggle(
-                    text = "Hide Armor Overlay in Skyblock",
-                    property = configOptions::hideArmorOverlay
-                )
-                makeToggle(
-                    text = "Hide Hunger Overlay in Skyblock",
-                    property = configOptions::hideHungerOverlay
-                )
-                makeToggle(
-                    text = "Hide Fire Overlay",
-                    property = configOptions::hideFireOverlay
-                )
-                makeToggle(
-                    text = "Hide Lightning (SkyBlock only)",
-                    property = configOptions::hideLightning
-                )
-                makeToggle(
-                    text = "Hide Non-Crits",
-                    property = configOptions::hideNonCrits
-                )
-                makeToggle(
-                    text = "Hide Crits",
-                    property = configOptions::hideCrits
-                )
-                makeToggle(
-                    text = "Truncate Crits",
-                    property = configOptions::truncateDamage
-                )
-                makeIntSlider(
-                    text = "Anti Downtime Alarm",
-                    property = configOptions::alarmTimeout,
-                    min = 0,
-                    max = 1000,
-                    tooltip = "Set to 0 to disable. (Time in seconds)"
-                )
-                makeToggle(
-                    text = "Arachne Keeper Waypoints",
-                    property = configOptions::arachneKeeperWaypoints
-                )
-                makeToggle(
-                    text = "Arachne Boss Spawn Timer",
-                    property = configOptions::arachneSpawnTimer
-                )
-                makeToggle(
-                    text = "Convert Action Bar to HUD elements",
-                    property = configOptions::hudifyActionBar,
-                    tooltip = "This converts Mana/Health/Def/Stacks as HUD elements"
-                )
-                makeToggle(
-                    text = "Show Speed in HUD",
-                    property = configOptions::speedHud
-                )
-                makeToggle(
-                    text = "Include EHP in def HUD element",
-                    property = configOptions::showEHP,
-                    tooltip = "Must have Action Bar HUD elements Enabled"
-                )
-                makeToggle(
-                    text = "Hide Held Item Tooltips",
-                    property = configOptions::hideHeldItemTooltip,
-                    tooltip = "This is for the pesky overlay that pops up on switching items"
-                )
-                makeToggle(
-                    text = "Etherwarp Preview",
-                    property = configOptions::showEtherwarpPreview,
-                    tooltip = "Highlights the targeted block when shifting with a aotv"
-                )
-                makeColor(
-                    text = "Etherwarp Preview Color",
+                toggle("Inventory Scale Toggle") {
+                    property = configOptions::invScaleBool
+                    tooltip = "This is a tooltip".literal()
+                }
+                float("Inventory Scale") {
+                    property = configOptions::inventoryScale
+                    tooltip = "Size of GUI whenever you're in an inventory screen".literal()
+                }
+                float("Tooltip Scale") {
+                    property = configOptions::tooltipScale
+                    tooltip = "Default Value for Scaling a particular tooltip without scroll input".literal()
+                }
+                toggle("Ignore Reverse Third Person") { property = configOptions::ignoreReverseThirdPerson }
+                toggle("Disable Status Effect Rendering") { property = configOptions::statusEffectHidden }
+                toggle("Custom Block outlines") { property = configOptions::customBlockOutlines }
+                intSlider("Line Thickness") {
+                    property = configOptions::blockOutlineThickness
+                    range = 1..5
+                }
+                color("Outline Color") { property = configOptions::blockOutlineColor }
+                toggle("Abiphone DND") { property = configOptions::abiPhoneDND }
+                toggle("Abiphone Caller ID") { property = configOptions::abiPhoneCallerID }
+                toggle("Inactive Effigy Waypoints") { property = configOptions::inactiveEffigyDisplay }
+                toggle("Disable Explosion Particles") { property = configOptions::disableExplosionParticles }
+                toggle("Durability-Based Cooldown Display") { property = configOptions::duraCooldown }
+                toggle("Hide Armor Overlay in Skyblock") { property = configOptions::hideArmorOverlay }
+                toggle("Hide Hunger Overlay in Skyblock") { property = configOptions::hideHungerOverlay }
+                toggle("Hide Fire Overlay") { property = configOptions::hideFireOverlay }
+                toggle("Hide Lightning (SkyBlock only)") { property = configOptions::hideLightning }
+                toggle("Hide Non-Crits") { property = configOptions::hideNonCrits }
+                toggle("Hide Crits") { property = configOptions::hideCrits }
+                toggle("Truncate Crits") { property = configOptions::truncateDamage }
+                intSlider("Anti Downtime Alarm") {
+                    property = configOptions::alarmTimeout
+                    tooltip = "Set to 0 to disable. (Time in seconds)".literal()
+                    range = 0..1000
+                }
+                toggle("Arachne Keeper Waypoints") { property = configOptions::arachneKeeperWaypoints }
+                toggle("Arachne Boss Spawn Timer") { property = configOptions::arachneSpawnTimer }
+                toggle("Convert Action Bar to HUD elements") {
+                    property = configOptions::hudifyActionBar
+                    tooltip = "This converts Mana/Health/Def/Stacks as HUD elements".literal()
+                }
+                toggle("Show Speed in HUD") { property = configOptions::speedHud }
+                toggle("Include EHP in def HUD element") {
+                    property = configOptions::showEHP
+                    tooltip = "Must have Action Bar HUD elements Enabled".literal()
+                }
+                toggle("Hide Held Item Tooltips") {
+                    property = configOptions::hideHeldItemTooltip
+                    tooltip = "This is for the pesky overlay that pops up on switching items".literal()
+                }
+                toggle("Etherwarp Preview") {
+                    property = configOptions::showEtherwarpPreview
+                    tooltip = "Highlights the targeted block when shifting with a aotv".literal()
+                }
+                color("Etherwarp Preview Color") {
                     property = configOptions::etherwarpPreviewColor
-                ) { setDefaultValue(0x99FFFFFF.toInt()) }
-                makeToggle(
-                    text = "Broken Hype Notification",
-                    property = configOptions::brokenHypNotif
-                )
+                    default = 0x99FFFFFF.toInt()
+                }
+                toggle("Broken Hype Notification") { property = configOptions::brokenHypNotif }
             }
 
             category("Shortcuts") {
-                makeKeybind(
-                    text = "Dynamic Key",
-                    property = configOptions::dynamicKey
-                )
-                makeToggle(
-                    "Only Register Shortcuts in Skyblock",
-                    configOptions::macrosSkyBlockOnly,
-                    "Useful if you want to use some of these binds elsewhere for non-skyblock specific stuff"
-                )
-                makeConfigList(
-                    name = "Macros",
-                    property = configOptions::macrosList,
-                    newT = { Macro(UNKNOWN_KEY, "") },
-                    elementName = "Macro",
-                    render = { value ->
+                keybind("Dynamic Key") { property = configOptions::dynamicKey }
+                toggle("Only Register Shortcuts in Skyblock") {
+                    property = configOptions::macrosSkyBlockOnly
+                    tooltip = "Useful if you want to use some of these binds elsewhere for non-skyblock specific stuff".literal()
+                }
+                list<Macro>("Macros") {
+                    property = configOptions::macrosList
+                    defaultElementSupplier = { Macro(UNKNOWN_KEY, "") }
+                    elementName = "Macro".literal()
+                    elementBuilder = { value ->
                         listOf(
                             makeString("Command", value::command),
                             makeKeybind("Keybind", value::keyBinding)
                         )
                     }
-                )
+                }
             }
 
             category("Aliases") {
-                makeConfigList(
-                    name = "Aliases (do not include '/')",
-                    property = configOptions::aliasList,
-                    newT = { Alias("", "") },
-                    elementName = "Alias",
-                    render = { value ->
+                list<Alias>("Aliases (do not include '/')") {
+                    property = configOptions::aliasList
+                    defaultElementSupplier = { Alias("", "") }
+                    elementName = "Alias".literal()
+                    elementBuilder = { value ->
                         listOf(
                             makeString("Command", value::command),
                             makeString("Alias", value::alias)
                         )
                     }
-                )
+                }
             }
 
             category("Animations") {
-                makeIntSlider(
-                    text = "posX",
-                    property = configOptions.animationPreset::posX,
-                    min = -150,
-                    max = 150
-                )
-                makeIntSlider(
-                    text = "posY",
-                    property = configOptions.animationPreset::posY,
-                    min = -150,
-                    max = 150
-                )
-                makeIntSlider(
-                    text = "posZ",
-                    property = configOptions.animationPreset::posZ,
-                    min = -150, max = 50
-                )
-                makeIntSlider(
-                    text = "rotationX",
-                    property = configOptions.animationPreset::rotX,
-                    min = -180,
-                    max = 180
-                )
-                makeIntSlider(
-                    text = "rotationY",
-                    property = configOptions.animationPreset::rotY,
-                    min = -180,
-                    max = 180
-                )
-                makeIntSlider(
-                    text = "rotationZ",
-                    property = configOptions.animationPreset::rotZ,
-                    min = -180,
-                    max = 180
-                )
-                makeFloat(
-                    text = "Held Item Scale",
-                    property = configOptions.animationPreset::scale,
-                    tooltip = "Recommended range of .1 - 2"
-                )
-                makeIntSlider(
-                    text = "Swing Speed",
-                    property = configOptions.animationPreset::swingDuration,
-                    min = 2,
-                    max = 20
-                )
-                makeToggle(
-                    text = "Cancel Re-Equip Animation",
-                    property = configOptions.animationPreset::cancelReEquip
-                )
+                intSlider("posX") {
+                    property = configOptions.animationPreset::posX
+                    range = -150..150
+                }
+                intSlider("posY") {
+                    property = configOptions.animationPreset::posY
+                    range = -150..150
+                }
+                intSlider("posZ") {
+                    property = configOptions.animationPreset::posZ
+                    range = -150..50
+                }
+                intSlider("rotationX") {
+                    property = configOptions.animationPreset::rotX
+                    range = -180..180
+                }
+                intSlider("rotationY") {
+                    property = configOptions.animationPreset::rotY
+                    range = -180..180
+                }
+                intSlider("rotationZ") {
+                    property = configOptions.animationPreset::rotZ
+                    range = -180..180
+                }
+                float("Held Item Scale") {
+                    property = configOptions.animationPreset::scale
+                    tooltip = "Recommended range of .1 - 2".literal()
+                }
+                intSlider("Swing Speed") {
+                    property = configOptions.animationPreset::swingDuration
+                    range = 2..20
+                }
+                toggle("Cancel Re-Equip Animation") { property = configOptions.animationPreset::cancelReEquip }
             }
 
             category("Bridge Features") {
-                makeToggle(
-                    text = "Format Bridge Messages",
-                    property = configOptions::bridgeFormatter
-                )
-                makeString(
-                    text = "Bridge Bot IGN",
-                    property = configOptions::bridgeBotName
-                )
-                makeColor(
-                    text = "Bridge User Color",
+                toggle("Format Bridge Messages") { property = configOptions::bridgeFormatter }
+                string("Bridge Bot IGN") { property = configOptions::bridgeBotName }
+                color("Bridge User Color") {
                     property = configOptions::bridgeNameColor
-                ) { setDefaultValue(Formatting.GOLD.colorValue!!) }
+                    default = Formatting.GOLD.colorValue!!
+                }
             }
 
             category("Slayer") {
-                makeToggle(
-                    text = "MiniBoss Highlight Box",
-                    property = configOptions::boxMinis
-                )
-                makeToggle(
-                    text = "Miniboss Announcement Alert",
-                    property = configOptions::announceMinis
-                )
-                makeToggle(
-                    text = "Show Kill Time on Slayer Completion",
-                    property = configOptions::slayerKillTime,
-                    tooltip = "Shows up in chat!"
-                )
-                makeToggle(
-                    text = "Blaze Slayer Attunement Display",
-                    property = configOptions::attunementDisplay,
-                    tooltip = "Shows a wireframe in the correct color for the slayer"
-                )
-                makeToggle(
-                    text = "Disable ALL particles during Blaze slayer boss",
-                    property = configOptions::cleanBlaze
-                )
-                makeToggle(
-                    text = "Vampire Steak Display",
-                    property = configOptions::steakDisplay,
-                    tooltip = "Shows a wireframe on vampire boss when you can 1 tap it"
-                )
-                makeToggle(
-                    text = "Blood Ichor Highlight",
-                    property = configOptions::ichorHighlight,
-                    tooltip = "Highlights the T5 mechanic that you line up with the boss."
-                )
+                toggle("Miniboss Highlight Box") { property = configOptions::boxMinis }
+                toggle("Miniboss Announcement Alert") { property = configOptions::announceMinis }
+                toggle("Show Kill Time on Slayer Completion") {
+                    property = configOptions::slayerKillTime
+                    tooltip = "Shows up in chat!".literal()
+                }
+                toggle("Blaze Slayer Attunement Display") {
+                    property = configOptions::attunementDisplay
+                    tooltip = "Shows a wireframe in the correct color for the slayer".literal()
+                }
+                toggle("Disable ALL particles during Blaze slayer boss") { property = configOptions::cleanBlaze }
+                toggle("Vampire Steak Display") {
+                    property = configOptions::steakDisplay
+                    tooltip = "Shows a wireframe on vampire boss when you can 1 tap it".literal()
+                }
+                toggle("Blood Ichor Highlight") {
+                    property = configOptions::ichorHighlight
+                    tooltip = "Highlights the T5 mechanic that you line up with the boss.".literal()
+                }
             }
 
             category("Garden") {
-                makeToggle(
-                    text = "Show Visitor Info in HUD",
-                    property = configOptions::visitorHud,
-                )
-                makeToggle(
-                    text = "Show Composter Info in HUD",
-                    property = configOptions::showComposterInfo
-                )
-                makeToggle(
-                    text = "Show Title alert when max visitors",
-                    property = configOptions::visitorAlert
-                )
-                makeToggle(
-                    text = "Persistent Visitor alert (dependent on previous)",
-                    property = configOptions::persistentVisitorAlert
-                )
-                makeToggle(
-                    text = "Show Blocks per second (SPEED)",
-                    property = configOptions::speedBpsHud
-                )
-                makeToggle(
-                    text = "Show Pitch/Yaw in HUD",
-                    property = configOptions::pitchYawDisplay
-                )
+                toggle("Show Visitor Info in HUD") { property = configOptions::visitorHud }
+                toggle("Show Composter Info in HUD") { property = configOptions::showComposterInfo }
+                toggle("Show Title alert when max visitors") { property = configOptions::visitorAlert }
+                toggle("Persistent Visitor alert (dependent on previous)") { property = configOptions::persistentVisitorAlert }
+                toggle("Show Blocks per second (SPEED)") { property = configOptions::speedBpsHud }
+                toggle("Show Pitch/Yaw in HUD") { property = configOptions::pitchYawDisplay }
             }
         }.let { screen = it }
     }

@@ -1,5 +1,8 @@
-package com.dulkirfabric.dsl
+@file:Suppress("unused")
 
+package com.dulkirfabric.dsl.config
+
+import com.dulkirfabric.dsl.literal
 import me.shedaniel.clothconfig2.api.*
 import me.shedaniel.clothconfig2.gui.entries.*
 import me.shedaniel.clothconfig2.impl.builders.*
@@ -37,24 +40,16 @@ fun ConfigBuilder.category(
     init: ConfigCategory.() -> Unit
 ) = category(name.literal(), init)
 
-/**
- * Creates a [StringListEntry] in the receiving [ConfigCategory]
- * @return The new [StringListEntry]
- */
-fun ConfigCategory.makeString(
+fun makeString(
     text: Text,
     property: KMutableProperty0<String>
 ) = StringFieldBuilder(resetButtonKey, text, property.get()).run {
     setSaveConsumer { property.set(it) }
     setDefaultValue("")
     build()
-}.also { addEntry(it) }
+}
 
-/**
- * Creates a [StringListEntry] in the receiving [ConfigCategory]
- * @return The new [StringListEntry]
- */
-fun ConfigCategory.makeString(
+fun makeString(
     text: String,
     property: KMutableProperty0<String>
 ) = makeString(text.literal(), property)
@@ -134,20 +129,20 @@ fun ConfigCategory.makeToggle(
  * Creates a [KeyCodeEntry] in the receiving [ConfigCategory]. This does not support modifier keys
  * @return The new [KeyCodeEntry]
  */
-fun ConfigCategory.makeKeybind(
+fun makeKeybind(
     text: Text,
     property: KMutableProperty0<InputUtil.Key>
 ) = KeyCodeBuilder(resetButtonKey, text, ModifierKeyCode.of(property.get(), Modifier.none())).run {
     setKeySaveConsumer { property.set(it) }
     setDefaultValue(InputUtil.UNKNOWN_KEY)
     build()
-}.also { addEntry(it) }
+}
 
 /**
  * Creates a [KeyCodeEntry] in the receiving [ConfigCategory]
  * @return The new [KeyCodeEntry]
  */
-fun ConfigCategory.makeKeybind(
+fun makeKeybind(
     text: String,
     property: KMutableProperty0<InputUtil.Key>
 ) = makeKeybind(text.literal(), property)
