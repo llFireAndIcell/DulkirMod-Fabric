@@ -87,7 +87,6 @@ object Registrations {
             DamageNumbers,
             Garden,
             VisitorAlert,
-            BrokenHyp,
             Vampire,
         ).forEach { EVENT_BUS.subscribe(it) }
     }

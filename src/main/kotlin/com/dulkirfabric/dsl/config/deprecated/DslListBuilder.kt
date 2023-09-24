@@ -1,4 +1,4 @@
-package com.dulkirfabric.dsl.config
+package com.dulkirfabric.dsl.config.deprecated
 
 import com.dulkirfabric.dsl.literal
 import me.shedaniel.clothconfig2.api.AbstractConfigListEntry

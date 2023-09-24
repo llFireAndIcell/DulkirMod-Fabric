@@ -32,7 +32,6 @@ object DulkirModFabric : ModInitializer {
 	override fun onInitialize() {
 		logger.info("Initializing DulkirMod...")
 
-
 		// Orbit stuff
 		EVENT_BUS.registerLambdaFactory("com.dulkirfabric") { lookupInMethod, klass ->
 			lookupInMethod(null, klass, MethodHandles.lookup()) as MethodHandles.Lookup

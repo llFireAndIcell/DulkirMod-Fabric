@@ -1,8 +1,9 @@
 @file:Suppress("unused")
 
-package com.dulkirfabric.dsl.config
+package com.dulkirfabric.dsl.config.deprecated
 
 import com.dulkirfabric.dsl.literal
+import com.dulkirfabric.dsl.translatable
 import me.shedaniel.clothconfig2.api.*
 import me.shedaniel.clothconfig2.gui.entries.*
 import me.shedaniel.clothconfig2.impl.builders.*
@@ -13,8 +14,7 @@ import net.minecraft.text.Text
 import java.util.*
 import kotlin.reflect.KMutableProperty0
 
-// this is necessary for some weird reason idk what it does but the value is constant
-val resetButtonKey: Text = Text.translatable("text.cloth-config.reset_value")
+val resetButtonKey: Text = "text.cloth-config.reset_value".translatable
 
 /**
  * Creates a [ConfigBuilder] and passes it into [init] as `this`
@@ -43,7 +43,7 @@ fun ConfigBuilder.category(
 fun makeString(
     text: Text,
     property: KMutableProperty0<String>
-) = StringFieldBuilder(resetButtonKey, text, property.get()).run {
+): StringListEntry = StringFieldBuilder(resetButtonKey, text, property.get()).run {
     setSaveConsumer { property.set(it) }
     setDefaultValue("")
     build()

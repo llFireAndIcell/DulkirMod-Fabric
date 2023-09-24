@@ -16,6 +16,7 @@ package com.dulkirfabric.config
 import com.dulkirfabric.DulkirModFabric.mc
 import com.dulkirfabric.dsl.*
 import com.dulkirfabric.dsl.config.*
+import com.dulkirfabric.dsl.config.deprecated.*
 import com.dulkirfabric.util.render.AnimationPreset
 import com.dulkirfabric.util.render.HudElement
 import kotlinx.serialization.Serializable
@@ -39,80 +40,149 @@ class DulkirConfig {
     var screen: Screen
 
     init {
-        configBuilder {
-            // general config settings
-            defaultBackgroundTexture = Identifier("minecraft:textures/block/oak_planks.png")
-            setGlobalized(true)
-            setGlobalizedExpanded(false)
-            parentScreen = mc.currentScreen
-            setSavingRunnable(::saveConfig)
-            transparentBackground()
-
-            // making categories and adding config options
+        screen = config {
+            defaultBackground = Identifier("minecraft:textures/block/oak_planks.png")
+            globalized = true
+            globalizedExpanded = false
+            parent = mc.currentScreen!!
+            saveRunnable = ::saveConfig
+            
             category("General") {
-                toggle("Inventory Scale Toggle") {
+                toggle {
+                    name = "Inventory Scale Toggle".literal
                     property = configOptions::invScaleBool
-                    tooltip = "This is a tooltip".literal()
+                    tooltip = "This is a tooltip".literal
                 }
-                float("Inventory Scale") {
+                float {
+                    name = "Inventory Scale Toggle".literal
                     property = configOptions::inventoryScale
-                    tooltip = "Size of GUI whenever you're in an inventory screen".literal()
+                    tooltip = "Size of GUI whenever you're in an inventory screen".literal
                 }
-                float("Tooltip Scale") {
+                float {
+                    name = "Tooltip Scale".literal
                     property = configOptions::tooltipScale
-                    tooltip = "Default Value for Scaling a particular tooltip without scroll input".literal()
+                    tooltip = "Default Value for Scaling a particular tooltip without scroll input".literal
                 }
-                toggle("Ignore Reverse Third Person") { property = configOptions::ignoreReverseThirdPerson }
-                toggle("Disable Status Effect Rendering") { property = configOptions::statusEffectHidden }
-                toggle("Custom Block outlines") { property = configOptions::customBlockOutlines }
-                intSlider("Line Thickness") {
+                toggle {
+                    name = "Ignore Reverse Third Person".literal
+                    property = configOptions::ignoreReverseThirdPerson
+                }
+                toggle {
+                    name = "Disable Status Effect Rendering".literal
+                    property = configOptions::statusEffectHidden
+                }
+                toggle {
+                    name = "Custom Block outlines".literal
+                    property = configOptions::customBlockOutlines
+                }
+                intSlider {
+                    name = "Line Thickness".literal
                     property = configOptions::blockOutlineThickness
                     range = 1..5
                 }
-                color("Outline Color") { property = configOptions::blockOutlineColor }
-                toggle("Abiphone DND") { property = configOptions::abiPhoneDND }
-                toggle("Abiphone Caller ID") { property = configOptions::abiPhoneCallerID }
-                toggle("Inactive Effigy Waypoints") { property = configOptions::inactiveEffigyDisplay }
-                toggle("Disable Explosion Particles") { property = configOptions::disableExplosionParticles }
-                toggle("Durability-Based Cooldown Display") { property = configOptions::duraCooldown }
-                toggle("Hide Armor Overlay in Skyblock") { property = configOptions::hideArmorOverlay }
-                toggle("Hide Hunger Overlay in Skyblock") { property = configOptions::hideHungerOverlay }
-                toggle("Hide Fire Overlay") { property = configOptions::hideFireOverlay }
-                toggle("Hide Lightning (SkyBlock only)") { property = configOptions::hideLightning }
-                toggle("Hide Non-Crits") { property = configOptions::hideNonCrits }
-                toggle("Hide Crits") { property = configOptions::hideCrits }
-                toggle("Truncate Crits") { property = configOptions::truncateDamage }
-                intSlider("Anti Downtime Alarm") {
+                color {
+                    name = "Outline Color".literal
+                    property = configOptions::blockOutlineColor
+                }
+                toggle {
+                    name = "Abiphone DND".literal
+                    property = configOptions::abiPhoneDND
+                }
+                toggle {
+                    name = "Abiphone Caller ID".literal
+                    property = configOptions::abiPhoneCallerID
+                }
+                toggle {
+                    name = "Inactive Effigy Waypoints".literal
+                    property = configOptions::inactiveEffigyDisplay
+                }
+                toggle {
+                    name = "Disable Explosion Particles".literal
+                    property = configOptions::disableExplosionParticles
+                }
+                toggle {
+                    name = "Durability-Based Cooldown Display".literal
+                    property = configOptions::duraCooldown
+                }
+                toggle {
+                    name = "Hide Armor Overlay in Skyblock".literal
+                    property = configOptions::hideArmorOverlay
+                }
+                toggle {
+                    name = "Hide Hunger Overlay in Skyblock".literal
+                    property = configOptions::hideHungerOverlay
+                }
+                toggle {
+                    name = "Hide Fire Overlay".literal
+                    property = configOptions::hideFireOverlay
+                }
+                toggle {
+                    name = "Hide Lightning (SkyBlock only)".literal
+                    property = configOptions::hideLightning
+                }
+                toggle {
+                    name = "Hide Non-Crits".literal
+                    property = configOptions::hideNonCrits
+                }
+                toggle {
+                    name = "Hide Crits".literal
+                    property = configOptions::hideCrits
+                }
+                toggle {
+                    name = "Truncate Crits".literal
+                    property = configOptions::truncateDamage
+                }
+                intSlider {
+                    name = "Anti Downtime Alarm".literal
                     property = configOptions::alarmTimeout
-                    tooltip = "Set to 0 to disable. (Time in seconds)".literal()
+                    tooltip = "Set to 0 to disable. (Time in seconds)".literal
                     range = 0..1000
                 }
-                toggle("Arachne Keeper Waypoints") { property = configOptions::arachneKeeperWaypoints }
-                toggle("Arachne Boss Spawn Timer") { property = configOptions::arachneSpawnTimer }
-                toggle("Convert Action Bar to HUD elements") {
+                toggle {
+                    name = "Arachne Keeper Waypoints".literal
+                    property = configOptions::arachneKeeperWaypoints
+                }
+                toggle {
+                    name = "Arachne Boss Spawn Timer".literal
+                    property = configOptions::arachneSpawnTimer
+                }
+                toggle {
+                    name = "Convert Action Bar to HUD elements".literal
                     property = configOptions::hudifyActionBar
-                    tooltip = "This converts Mana/Health/Def/Stacks as HUD elements".literal()
+                    tooltip = "This converts Mana/Health/Def/Stacks as HUD elements".literal
                 }
-                toggle("Show Speed in HUD") { property = configOptions::speedHud }
-                toggle("Include EHP in def HUD element") {
+                toggle {
+                    name = "Show Speed in HUD".literal
+                    property = configOptions::speedHud
+                }
+                toggle {
+                    name = "Include EHP in def HUD element".literal
                     property = configOptions::showEHP
-                    tooltip = "Must have Action Bar HUD elements Enabled".literal()
+                    tooltip = "Must have Action Bar HUD elements Enabled".literal
                 }
-                toggle("Hide Held Item Tooltips") {
+                toggle {
+                    name = "Hide Held Item Tooltips".literal
                     property = configOptions::hideHeldItemTooltip
-                    tooltip = "This is for the pesky overlay that pops up on switching items".literal()
+                    tooltip = "This is for the pesky overlay that pops up on switching items".literal
                 }
-                toggle("Etherwarp Preview") {
+                toggle {
+                    name = "Etherwarp Preview".literal
                     property = configOptions::showEtherwarpPreview
-                    tooltip = "Highlights the targeted block when shifting with a aotv".literal()
+                    tooltip = "Highlights the targeted block when shifting with a aotv".literal
                 }
-                color("Etherwarp Preview Color") {
+                color {
+                    name = "Etherwarp Preview Color".literal
                     property = configOptions::etherwarpPreviewColor
                     default = 0x99FFFFFF.toInt()
                 }
-                toggle("Broken Hype Notification") { property = configOptions::brokenHypNotif }
             }
 
+            category("Shortcuts") {
+
+            }
+        }
+
+        configBuilder {
             category("Shortcuts") {
                 keybind("Dynamic Key") { property = configOptions::dynamicKey }
                 toggle("Only Register Shortcuts in Skyblock") {
@@ -122,11 +192,11 @@ class DulkirConfig {
                 list<Macro>("Macros") {
                     property = configOptions::macrosList
                     defaultElementSupplier = { Macro(UNKNOWN_KEY, "") }
-                    elementName = "Macro".literal()
+                    elementName = "Macro".literal
                     elementBuilder = { value ->
                         listOf(
-                            makeString("Command", value::command),
-                            makeKeybind("Keybind", value::keyBinding)
+                            string("Command") { property = value::command },
+                            keybind("Keybind") { property = value::keyBinding }
                         )
                     }
                 }
@@ -139,8 +209,8 @@ class DulkirConfig {
                     elementName = "Alias".literal()
                     elementBuilder = { value ->
                         listOf(
-                            makeString("Command", value::command),
-                            makeString("Alias", value::alias)
+                            string("Command") { property = value::command },
+                            string("Alias") { property = value::alias }
                         )
                     }
                 }
@@ -273,7 +343,6 @@ class DulkirConfig {
         var slayerKillTime: Boolean = false,
         var visitorAlert: Boolean = false,
         var persistentVisitorAlert: Boolean = false,
-        var brokenHypNotif: Boolean = false,
         var steakDisplay: Boolean = false,
         var ichorHighlight: Boolean = false,
         var speedHud: Boolean = false,
