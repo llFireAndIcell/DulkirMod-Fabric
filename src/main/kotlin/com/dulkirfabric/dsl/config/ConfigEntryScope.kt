@@ -9,7 +9,7 @@ abstract class ConfigEntryScope<T> {
     abstract var name: Text
     abstract var property: KMutableProperty0<T>
     abstract var default: T
-    open var tooltip: Text? = null
+    open var tooltip: Array<Text>? = null
     open var requiresRestart: Boolean = false
 
     abstract fun build(): AbstractConfigListEntry<T>

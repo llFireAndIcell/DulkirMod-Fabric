@@ -15,7 +15,7 @@ class IntSliderScope : ConfigEntryScope<Int>() {
     override var default: Int = 0
     var range: IntRange = Int.MIN_VALUE..Int.MAX_VALUE
 
-    @Suppress("DEPRECATION")
+    @Suppress("DEPRECATION", "UnstableApiUsage")
     override fun build(): AbstractConfigListEntry<Int> {
         return IntegerSliderEntry(
             name,
@@ -25,7 +25,7 @@ class IntSliderScope : ConfigEntryScope<Int>() {
             resetButtonKey,
             { default },
             { property.set(it) },
-            { Optional.ofNullable(arrayOf(tooltip))},
+            { tooltip?.let { Optional.of(it) } },
             requiresRestart
         )
     }

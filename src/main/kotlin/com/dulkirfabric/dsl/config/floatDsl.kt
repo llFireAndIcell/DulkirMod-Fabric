@@ -16,7 +16,7 @@ class FloatScope : ConfigEntryScope<Float>() {
     var min: Float? = null
     var max: Float? = null
 
-    @Suppress("DEPRECATION")
+    @Suppress("DEPRECATION", "UnstableApiUsage")
     override fun build(): FloatListEntry {
         return FloatListEntry(
             name,
@@ -24,7 +24,7 @@ class FloatScope : ConfigEntryScope<Float>() {
             resetButtonKey,
             { default },
             { property.set(it) },
-            { Optional.ofNullable(arrayOf(tooltip)) },
+            { tooltip?.let { Optional.of(it) } },
             requiresRestart
         ).apply {
             min?.let { setMinimum(it) }

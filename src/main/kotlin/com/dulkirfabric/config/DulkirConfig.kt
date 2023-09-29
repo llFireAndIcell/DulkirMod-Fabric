@@ -14,9 +14,8 @@
 package com.dulkirfabric.config
 
 import com.dulkirfabric.DulkirModFabric.mc
-import com.dulkirfabric.dsl.*
 import com.dulkirfabric.dsl.config.*
-import com.dulkirfabric.dsl.config.deprecated.*
+import com.dulkirfabric.dsl.literal
 import com.dulkirfabric.util.render.AnimationPreset
 import com.dulkirfabric.util.render.HudElement
 import kotlinx.serialization.Serializable
@@ -24,10 +23,14 @@ import kotlinx.serialization.UseSerializers
 import kotlinx.serialization.decodeFromString
 import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
+import me.shedaniel.clothconfig2.api.Modifier
+import me.shedaniel.clothconfig2.api.ModifierKeyCode
 import moe.nea.jarvis.api.Point
 import net.minecraft.client.gui.screen.Screen
-import net.minecraft.client.util.InputUtil.*
-import net.minecraft.text.*
+import net.minecraft.client.util.InputUtil.UNKNOWN_KEY
+import net.minecraft.text.LiteralTextContent
+import net.minecraft.text.MutableText
+import net.minecraft.text.Text
 import net.minecraft.util.Formatting
 import net.minecraft.util.Identifier
 import java.io.File
@@ -51,17 +54,17 @@ class DulkirConfig {
                 toggle {
                     name = "Inventory Scale Toggle".literal
                     property = configOptions::invScaleBool
-                    tooltip = "This is a tooltip".literal
+                    tooltip = arrayOf("This is a tooltip".literal)
                 }
                 float {
                     name = "Inventory Scale Toggle".literal
                     property = configOptions::inventoryScale
-                    tooltip = "Size of GUI whenever you're in an inventory screen".literal
+                    tooltip = arrayOf("Size of GUI whenever you're in an inventory screen".literal)
                 }
                 float {
                     name = "Tooltip Scale".literal
                     property = configOptions::tooltipScale
-                    tooltip = "Default Value for Scaling a particular tooltip without scroll input".literal
+                    tooltip = arrayOf("Default Value for Scaling a particular tooltip without scroll input".literal)
                 }
                 toggle {
                     name = "Ignore Reverse Third Person".literal
@@ -135,7 +138,7 @@ class DulkirConfig {
                 intSlider {
                     name = "Anti Downtime Alarm".literal
                     property = configOptions::alarmTimeout
-                    tooltip = "Set to 0 to disable. (Time in seconds)".literal
+                    tooltip = arrayOf("Set to 0 to disable. (Time in seconds)".literal)
                     range = 0..1000
                 }
                 toggle {
@@ -149,7 +152,7 @@ class DulkirConfig {
                 toggle {
                     name = "Convert Action Bar to HUD elements".literal
                     property = configOptions::hudifyActionBar
-                    tooltip = "This converts Mana/Health/Def/Stacks as HUD elements".literal
+                    tooltip = arrayOf("This converts Mana/Health/Def/Stacks as HUD elements".literal)
                 }
                 toggle {
                     name = "Show Speed in HUD".literal
@@ -158,17 +161,17 @@ class DulkirConfig {
                 toggle {
                     name = "Include EHP in def HUD element".literal
                     property = configOptions::showEHP
-                    tooltip = "Must have Action Bar HUD elements Enabled".literal
+                    tooltip = arrayOf("Must have Action Bar HUD elements Enabled".literal)
                 }
                 toggle {
                     name = "Hide Held Item Tooltips".literal
                     property = configOptions::hideHeldItemTooltip
-                    tooltip = "This is for the pesky overlay that pops up on switching items".literal
+                    tooltip = arrayOf("This is for the pesky overlay that pops up on switching items".literal)
                 }
                 toggle {
                     name = "Etherwarp Preview".literal
                     property = configOptions::showEtherwarpPreview
-                    tooltip = "Highlights the targeted block when shifting with a aotv".literal
+                    tooltip = arrayOf("Highlights the targeted block when shifting with a aotv".literal)
                 }
                 color {
                     name = "Etherwarp Preview Color".literal
@@ -178,131 +181,189 @@ class DulkirConfig {
             }
 
             category("Shortcuts") {
-
-            }
-        }
-
-        configBuilder {
-            category("Shortcuts") {
-                keybind("Dynamic Key") { property = configOptions::dynamicKey }
-                toggle("Only Register Shortcuts in Skyblock") {
-                    property = configOptions::macrosSkyBlockOnly
-                    tooltip = "Useful if you want to use some of these binds elsewhere for non-skyblock specific stuff".literal()
+                keybind {
+                    name = "Dynamic Key".literal
+                    property = configOptions::dynamicKey
                 }
-                list<Macro>("Macros") {
+                toggle {
+                    name = "Only Register Shortcuts in Skyblock".literal
+                    property = configOptions::macrosSkyBlockOnly
+                    tooltip = arrayOf("Useful if you want to use some of these binds elsewhere for non-skyblock specific stuff".literal)
+                }
+                list<Macro> {
                     property = configOptions::macrosList
-                    defaultElementSupplier = { Macro(UNKNOWN_KEY, "") }
-                    elementName = "Macro".literal
-                    elementBuilder = { value ->
+                    default = listOf(Macro(EMPTY_KEYBIND, ""))
+                    entry = {
                         listOf(
-                            string("Command") { property = value::command },
-                            keybind("Keybind") { property = value::keyBinding }
+                            stringEntry {
+                                name = "Command".literal
+                                property = it::command
+                            },
+                            keybindEntry {
+                                name = "Keybind".literal
+                                property = it::keyBinding
+                            }
                         )
                     }
                 }
             }
 
             category("Aliases") {
-                list<Alias>("Aliases (do not include '/')") {
+                list<Alias> {
+                    name = "Aliases (do not include '/')".literal
                     property = configOptions::aliasList
-                    defaultElementSupplier = { Alias("", "") }
-                    elementName = "Alias".literal()
-                    elementBuilder = { value ->
+                    entryName = "Alias".literal
+                    entry = {
                         listOf(
-                            string("Command") { property = value::command },
-                            string("Alias") { property = value::alias }
+                            stringEntry {
+                                name = "Command".literal
+                                property = it::command
+                            },
+                            stringEntry {
+                                name = "Alias".literal
+                                property = it::alias
+                            }
                         )
                     }
                 }
             }
 
             category("Animations") {
-                intSlider("posX") {
+                intSlider {
+                    name = "X Position".literal
                     property = configOptions.animationPreset::posX
                     range = -150..150
                 }
-                intSlider("posY") {
+                intSlider {
+                    name = "Y Position".literal
                     property = configOptions.animationPreset::posY
                     range = -150..150
                 }
-                intSlider("posZ") {
+                intSlider {
+                    name = "Z Position".literal
                     property = configOptions.animationPreset::posZ
                     range = -150..50
                 }
-                intSlider("rotationX") {
+                intSlider {
+                    name = "X Rotation".literal
                     property = configOptions.animationPreset::rotX
                     range = -180..180
                 }
-                intSlider("rotationY") {
+                intSlider {
+                    name = "Y Rotation".literal
                     property = configOptions.animationPreset::rotY
                     range = -180..180
                 }
-                intSlider("rotationZ") {
+                intSlider {
+                    name = "Z Rotation".literal
                     property = configOptions.animationPreset::rotZ
                     range = -180..180
                 }
-                float("Held Item Scale") {
+                float {
+                    name = "Held Item Scale".literal
                     property = configOptions.animationPreset::scale
-                    tooltip = "Recommended range of .1 - 2".literal()
+                    tooltip = arrayOf("Recommended range of .1 - 2".literal)
                 }
-                intSlider("Swing Speed") {
+                intSlider {
+                    name = "Swing Speed".literal
                     property = configOptions.animationPreset::swingDuration
                     range = 2..20
                 }
-                toggle("Cancel Re-Equip Animation") { property = configOptions.animationPreset::cancelReEquip }
+                toggle {
+                    name = "Cancel Re-Equip Animation".literal
+                    property = configOptions.animationPreset::cancelReEquip
+                }
             }
 
-            category("Bridge Features") {
-                toggle("Format Bridge Messages") { property = configOptions::bridgeFormatter }
-                string("Bridge Bot IGN") { property = configOptions::bridgeBotName }
-                color("Bridge User Color") {
+            category("Bridge") {
+                toggle {
+                    name = "Format Bridge Messages".literal
+                    property = configOptions::bridgeFormatter
+                }
+                string {
+                    name = "Bridge Bot IGN".literal
+                    property = configOptions::bridgeBotName
+                }
+                color {
+                    name = "Bridge User Color".literal
                     property = configOptions::bridgeNameColor
                     default = Formatting.GOLD.colorValue!!
                 }
             }
 
             category("Slayer") {
-                toggle("Miniboss Highlight Box") { property = configOptions::boxMinis }
-                toggle("Miniboss Announcement Alert") { property = configOptions::announceMinis }
-                toggle("Show Kill Time on Slayer Completion") {
+                toggle {
+                    name = "Miniboss Highlight Box".literal
+                    property = configOptions::boxMinis
+                }
+                toggle {
+                    name = "Miniboss Announcement Alert".literal
+                    property = configOptions::announceMinis
+                }
+                toggle {
+                    name = "Show Kill Time on Slayer Completion".literal
                     property = configOptions::slayerKillTime
-                    tooltip = "Shows up in chat!".literal()
+                    tooltip = arrayOf("Shows up in chat!".literal)
                 }
-                toggle("Blaze Slayer Attunement Display") {
+                toggle {
+                    name = "Blaze Slayer Attunement Display".literal
                     property = configOptions::attunementDisplay
-                    tooltip = "Shows a wireframe in the correct color for the slayer".literal()
+                    tooltip = arrayOf("Shows a wireframe in the correct color for the slayer".literal)
                 }
-                toggle("Disable ALL particles during Blaze slayer boss") { property = configOptions::cleanBlaze }
-                toggle("Vampire Steak Display") {
+                toggle {
+                    name = "Disable ALL particles during Blaze slayer boss".literal
+                    property = configOptions::cleanBlaze
+                }
+                toggle {
+                    name = "Vampire Steak Display".literal
                     property = configOptions::steakDisplay
-                    tooltip = "Shows a wireframe on vampire boss when you can 1 tap it".literal()
+                    tooltip = arrayOf("Shows a wireframe on vampire boss when you can 1 tap it".literal)
                 }
-                toggle("Blood Ichor Highlight") {
+                toggle {
+                    name = "Blood Ichor Highlight".literal
                     property = configOptions::ichorHighlight
-                    tooltip = "Highlights the T5 mechanic that you line up with the boss.".literal()
+                    tooltip = arrayOf("Highlights the T5 mechanic that you line up with the boss.".literal)
                 }
             }
 
             category("Garden") {
-                toggle("Show Visitor Info in HUD") { property = configOptions::visitorHud }
-                toggle("Show Composter Info in HUD") { property = configOptions::showComposterInfo }
-                toggle("Show Title alert when max visitors") { property = configOptions::visitorAlert }
-                toggle("Persistent Visitor alert (dependent on previous)") { property = configOptions::persistentVisitorAlert }
-                toggle("Show Blocks per second (SPEED)") { property = configOptions::speedBpsHud }
-                toggle("Show Pitch/Yaw in HUD") { property = configOptions::pitchYawDisplay }
+                toggle {
+                    name = "Show Visitor Info in HUD".literal
+                    property = configOptions::visitorHud
+                }
+                toggle {
+                    name = "Show Composter Info in HUD".literal
+                    property = configOptions::showComposterInfo
+                }
+                toggle {
+                    name = "Show Title alert when max visitors".literal
+                    property = configOptions::visitorAlert
+                }
+                toggle {
+                    name = "Persistent Visitor alert (dependent on previous)".literal
+                    property = configOptions::persistentVisitorAlert
+                }
+                toggle {
+                    name = "Show Blocks per second (SPEED)".literal
+                    property = configOptions::speedBpsHud
+                }
+                toggle {
+                    name = "Show Pitch/Yaw in HUD".literal
+                    property = configOptions::pitchYawDisplay
+                }
             }
-        }.let { screen = it }
+        }
     }
 
     @Serializable
     data class ConfigOptions(
         var invScaleBool: Boolean = false,
         var inventoryScale: Float = 1f,
-        var macrosList: List<Macro> = listOf(Macro(UNKNOWN_KEY, "")),
+        var macrosList: List<Macro> = listOf(Macro(EMPTY_KEYBIND, "")),
         var macrosSkyBlockOnly: Boolean = false,
         var aliasList: List<Alias> = listOf(Alias("", "")),
         var ignoreReverseThirdPerson: Boolean = false,
-        var dynamicKey: Key = UNKNOWN_KEY,
+        var dynamicKey: ModifierKeyCode = ModifierKeyCode.of(UNKNOWN_KEY, Modifier.none()),
         var customBlockOutlines: Boolean = false,
         var blockOutlineThickness: Int = 3,
         var blockOutlineColor: Int = 0xFFFFFF,
@@ -356,7 +417,7 @@ class DulkirConfig {
 
     @Serializable
     data class Macro(
-        var keyBinding: Key,
+        var keyBinding: ModifierKeyCode,
         var command: String,
     )
 

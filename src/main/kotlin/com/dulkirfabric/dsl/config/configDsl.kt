@@ -45,15 +45,14 @@ class ConfigScope {
      * - [parent]
      * - [fallbackCategory]
      */
-    @Suppress("UnstableApiUsage")
     fun build(): Screen {
         val builder = ConfigBuilder.create().also {
             it.parentScreen = parent
             it.setSavingRunnable(saveRunnable)
             it.setTitle(title)
             it.setFallbackCategory(it.getOrCreateCategory(
-                if (fallbackCategory == null) categoryScopes[0].name.literal()
-                else fallbackCategory.literal()
+                if (fallbackCategory == null) categoryScopes[0].name
+                else fallbackCategory.literal
             ))
             it.setGlobalized(globalized)
             it.setGlobalizedExpanded(globalizedExpanded)
@@ -67,7 +66,7 @@ class ConfigScope {
         }
 
         for (categoryScope in categoryScopes) {
-            builder.getOrCreateCategory(categoryScope.name.literal).apply {
+            builder.getOrCreateCategory(categoryScope.name).apply {
                 for (entry in categoryScope.entries) addEntry(entry)
             }
         }

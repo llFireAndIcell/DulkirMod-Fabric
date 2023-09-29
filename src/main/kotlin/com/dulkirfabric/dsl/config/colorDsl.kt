@@ -15,6 +15,7 @@ class ColorScope : ConfigEntryScope<Int>() {
     override lateinit var property: KMutableProperty0<Int>
     override var default: Int = Color.WHITE.rgb
 
+    @Suppress("DEPRECATION", "UnstableApiUsage")
     override fun build(): AbstractConfigListEntry<Int> {
         return ColorEntry(
             name,
@@ -22,7 +23,7 @@ class ColorScope : ConfigEntryScope<Int>() {
             resetButtonKey,
             { default },
             { property.set(it) },
-            { Optional.ofNullable(arrayOf(tooltip)) },
+            { tooltip?.let { Optional.of(it) } },
             requiresRestart
         )
     }

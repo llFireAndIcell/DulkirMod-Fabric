@@ -8,22 +8,21 @@ import java.util.*
 import kotlin.reflect.KMutableProperty0
 
 @ConfigDsl
-class ToggleScope : ConfigEntryScope<Boolean> {
+class ToggleScope : ConfigEntryScope<Boolean>() {
 
     override lateinit var name: Text
     override lateinit var property: KMutableProperty0<Boolean>
     override var default = false
-    override var tooltip: Text? = null
-    override var requiresRestart = false
     var yesNoTextSupplier: ((Boolean) -> Text)? = null
 
+    @Suppress("DEPRECATION", "UnstableApiUsage")
     override fun build(): BooleanListEntry = object : BooleanListEntry(
         name,
         property.get(),
         resetButtonKey,
         { default },
         { property.set(it) },
-        { Optional.ofNullable(arrayOf(tooltip)) },
+        { tooltip?.let { Optional.of(it) } },
         requiresRestart
     ) {
         override fun getYesNoText(bool: Boolean): Text =
